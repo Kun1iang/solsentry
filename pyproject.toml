@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solsentry"
+version = "1.0.0"
+description = "A lightweight, evidence-first static risk scanner for Solidity contracts."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Yao Kunliang", email = "3203757539@qq.com" }
+]
+keywords = ["solidity", "security", "static-analysis", "smart-contracts", "sarif"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = []
+
+[project.scripts]
+solsentry = "solsentry.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yaokunliang/solsentry"
+Documentation = "https://github.com/yaokunliang/solsentry/tree/main/docs"
+Issues = "https://github.com/yaokunliang/solsentry/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+solsentry = ["py.typed"]
