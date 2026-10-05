@@ -230,7 +230,10 @@ def _extract_parenthesised(text: str, open_index: int) -> str:
 
 
 def _superseded_by_check(body: str, call_start: int, call_end: int) -> bool:
-    """Best-effort check whether a low-level call result is inspected."""
+    """Best-effort check whether a low-level call result is inspected.
+
+    Handles both single-line ``bool ok = ...`` and multi-line tuple captures.
+    """
 
     before = body[max(0, call_start - 260) : call_start]
     after = body[call_end : call_end + 520]

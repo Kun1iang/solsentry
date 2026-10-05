@@ -101,14 +101,9 @@ class RuleTests(unittest.TestCase):
         self.assertIn("SS-103", ids)
 
     def test_checked_call_is_clean(self) -> None:
-        source = """
-        contract C {
-            function f(address payable to) external {
-                (bool ok, ) = to.call{value: 1}("");
-                require(ok, "failed");
-            }
-        }
-        """
+        source = (Path(__file__).parent / "fixtures" / "multiline.sol").read_text(
+            encoding="utf-8"
+        )
         ids = {finding.rule_id for finding in self.scanner.scan_text(source)}
         self.assertNotIn("SS-103", ids)
 
