@@ -1,0 +1,53 @@
+name: Rule request
+description: 建议新增一条静态规则或调整现有规则
+title: "[rule] "
+labels: ["type:feature", "status:review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        新规则需要可定位的证据与明确的误报边界。请先阅读 `docs/rules.md` 与 `CONTRIBUTING.md`。
+  - type: input
+    id: rule-name
+    attributes:
+      label: 规则名称
+      placeholder: "例如：Unprotected initializer"
+    validations:
+      required: true
+  - type: textarea
+    id: vulnerable
+    attributes:
+      label: Vulnerable 样例
+      description: 一段能触发问题的 Solidity 代码
+      render: solidity
+    validations:
+      required: true
+  - type: textarea
+    id: clean
+    attributes:
+      label: Clean 反例
+      description: 看起来相似但不应命中的代码
+      render: solidity
+    validations:
+      required: true
+  - type: textarea
+    id: detection
+    attributes:
+      label: 检测思路
+      description: 你希望如何判断？需要哪些上下文？
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: 参考
+      description: SWC / CWE / 公开审计报告 / 论文链接
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已确认这不是已有规则的重复
+          required: true
+        - label: 我理解规则需要 vulnerable + clean + 测试 + 文档
+          required: true
