@@ -1,0 +1,52 @@
+name: Bug report
+description: 报告误报、漏报、崩溃或输出格式问题
+title: "[bug] "
+labels: ["type:bug", "status:review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量提供最小复现；如果是规则误报，请同时给出 clean 反例。
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 实际输出、期望输出，以及为什么认为它是错的
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 最小复现
+      description: 合约片段、命令、Python 版本与操作系统
+      render: solidity
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: SolSentry 版本
+      placeholder: "v1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 影响
+      options:
+        - 误报（clean 代码被标记）
+        - 漏报（vulnerable 代码未标记）
+        - 崩溃 / 异常
+        - 输出格式 / 报告
+        - 文档
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 issue，没有重复
+          required: true
+        - label: 我没有在 issue 中粘贴真实私钥或未脱敏的主网地址
+          required: true

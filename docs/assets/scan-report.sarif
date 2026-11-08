@@ -1,0 +1,512 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "SolSentry",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/Yaokunliang/solsentry",
+          "rules": [
+            {
+              "id": "SS-101",
+              "name": "Reentrancy",
+              "shortDescription": {
+                "text": "Reentrancy"
+              },
+              "fullDescription": {
+                "text": "函数在外部调用之后仍写入合约状态，攻击者可在状态更新前重入该函数，重复提取资金或破坏账本一致性。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-107",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-107",
+                  "CWE-841"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-102",
+              "name": "tx.originAuthentication",
+              "shortDescription": {
+                "text": "tx.origin Authentication"
+              },
+              "fullDescription": {
+                "text": "使用 tx.origin 进行身份校验会绕过中间合约的意图，钓鱼合约可诱导受害者触发调用并继承其权限。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-115",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-115",
+                  "CWE-284"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-103",
+              "name": "UncheckedLow-LevelCall",
+              "shortDescription": {
+                "text": "Unchecked Low-Level Call"
+              },
+              "fullDescription": {
+                "text": "低级调用 call/send 返回的布尔值未被检查，调用失败时交易仍会继续执行，可能造成状态与资金不一致。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-104",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-104",
+                  "CWE-252"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-104",
+              "name": "DelegatecalltoDynamicTarget",
+              "shortDescription": {
+                "text": "Delegatecall to Dynamic Target"
+              },
+              "fullDescription": {
+                "text": "delegatecall 的目标来自参数或可变状态，攻击者可控制执行逻辑并在当前合约上下文中改写存储。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-112",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-112",
+                  "CWE-829"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-105",
+              "name": "WeakOn-ChainRandomness",
+              "shortDescription": {
+                "text": "Weak On-Chain Randomness"
+              },
+              "fullDescription": {
+                "text": "使用 block.timestamp、blockhash 等链上可观测值生成随机数，验证者或套利者可预测甚至影响结果。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-120",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-120",
+                  "CWE-330"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-106",
+              "name": "SelfdestructUsage",
+              "shortDescription": {
+                "text": "Selfdestruct Usage"
+              },
+              "fullDescription": {
+                "text": "selfdestruct 会强制转移余额并删除代码，且在上海升级后语义发生变化，可能破坏代理、审计与资金安全假设。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-106",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-106",
+                  "CWE-284"
+                ],
+                "precision": "medium"
+              }
+            },
+            {
+              "id": "SS-107",
+              "name": "MissingAccessControl",
+              "shortDescription": {
+                "text": "Missing Access Control"
+              },
+              "fullDescription": {
+                "text": "敏感管理函数为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。"
+              },
+              "helpUri": "https://swcregistry.io/docs/SWC-105",
+              "properties": {
+                "tags": [
+                  "security",
+                  "solidity",
+                  "SWC-105",
+                  "CWE-284"
+                ],
+                "precision": "medium"
+              }
+            }
+          ]
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "endTimeUtc": "2026-11-09T11:27:37+08:00"
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "examples/vulnerable/Bank.sol"
+          }
+        },
+        {
+          "location": {
+            "uri": "examples/vulnerable/Lottery.sol"
+          }
+        },
+        {
+          "location": {
+            "uri": "examples/vulnerable/Proxy.sol"
+          }
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "SS-101",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "函数 withdraw 在外部调用后仍更新状态变量 balances，存在重入窗口。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Bank.sol"
+                },
+                "region": {
+                  "startLine": 20,
+                  "startColumn": 33
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-101:examples/vulnerable/Bank.sol:20"
+          },
+          "properties": {
+            "severity": "high",
+            "confidence": "medium",
+            "swc": "SWC-107",
+            "cwe": "CWE-841"
+          }
+        },
+        {
+          "ruleId": "SS-102",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "函数 setOwner 使用 tx.origin 做身份判断；钓鱼合约可诱导受害者触发调用并继承其权限。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Bank.sol"
+                },
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 17
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-102:examples/vulnerable/Bank.sol:26"
+          },
+          "properties": {
+            "severity": "high",
+            "confidence": "high",
+            "swc": "SWC-115",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-102",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "函数 withdrawPot 使用 tx.origin 做身份判断；钓鱼合约可诱导受害者触发调用并继承其权限。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Lottery.sol"
+                },
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 17
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-102:examples/vulnerable/Lottery.sol:32"
+          },
+          "properties": {
+            "severity": "high",
+            "confidence": "high",
+            "swc": "SWC-115",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-104",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "函数 execute 对动态目标执行 delegatecall，攻击者可能控制执行逻辑并改写当前合约存储。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Proxy.sol"
+                },
+                "region": {
+                  "startLine": 24,
+                  "startColumn": 48
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-104:examples/vulnerable/Proxy.sol:24"
+          },
+          "properties": {
+            "severity": "high",
+            "confidence": "high",
+            "swc": "SWC-112",
+            "cwe": "CWE-829"
+          }
+        },
+        {
+          "ruleId": "SS-106",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "函数 destroy 调用 selfdestruct，可能强制转移余额并删除合约代码，破坏既有安全假设。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Proxy.sol"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 9
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-106:examples/vulnerable/Proxy.sol:30"
+          },
+          "properties": {
+            "severity": "high",
+            "confidence": "high",
+            "swc": "SWC-106",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-107",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "敏感函数 setOwner 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Bank.sol"
+                },
+                "region": {
+                  "startLine": 25,
+                  "startColumn": 5
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-107:examples/vulnerable/Bank.sol:25"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "low",
+            "swc": "SWC-105",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-107",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "敏感函数 sweep 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Bank.sol"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 5
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-107:examples/vulnerable/Bank.sol:30"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "low",
+            "swc": "SWC-105",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-103",
+          "ruleIndex": 2,
+          "level": "warning",
+          "message": {
+            "text": "函数 sweep 的 .call 返回值未被检查，调用失败时交易仍会继续执行。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Bank.sol"
+                },
+                "region": {
+                  "startLine": 31,
+                  "startColumn": 27
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-103:examples/vulnerable/Bank.sol:31"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "medium",
+            "swc": "SWC-104",
+            "cwe": "CWE-252"
+          }
+        },
+        {
+          "ruleId": "SS-105",
+          "ruleIndex": 4,
+          "level": "warning",
+          "message": {
+            "text": "函数 draw 使用区块变量生成随机结果，验证者可预测或影响抽取过程。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Lottery.sol"
+                },
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 1
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-105:examples/vulnerable/Lottery.sol:23"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "medium",
+            "swc": "SWC-120",
+            "cwe": "CWE-330"
+          }
+        },
+        {
+          "ruleId": "SS-107",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "敏感函数 upgradeTo 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Proxy.sol"
+                },
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 5
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-107:examples/vulnerable/Proxy.sol:15"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "low",
+            "swc": "SWC-105",
+            "cwe": "CWE-284"
+          }
+        },
+        {
+          "ruleId": "SS-107",
+          "ruleIndex": 6,
+          "level": "warning",
+          "message": {
+            "text": "敏感函数 destroy 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/vulnerable/Proxy.sol"
+                },
+                "region": {
+                  "startLine": 29,
+                  "startColumn": 5
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "solsentry/v1": "SS-107:examples/vulnerable/Proxy.sol:29"
+          },
+          "properties": {
+            "severity": "medium",
+            "confidence": "low",
+            "swc": "SWC-105",
+            "cwe": "CWE-284"
+          }
+        }
+      ]
+    }
+  ]
+}

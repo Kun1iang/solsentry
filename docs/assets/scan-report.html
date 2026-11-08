@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolSentry 扫描报告 · SolSentry</title>
+<style>
+  :root {
+    --ink:#102a33; --muted:#5b7078; --line:#dbe5ea; --bg:#f3f7f8;
+    --card:#ffffff; --accent:#0f766e; --accent-2:#14b8a6; --dark:#0b2b33;
+    --mono:"Cascadia Code","Consolas","SFMono-Regular",monospace;
+    --sans:"Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.65; }
+  .page { max-width:1160px;margin:0 auto;padding:28px 28px 56px; }
+  .hero { position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(135deg,#09262d 0%,#0f4c4c 58%,#0f766e 100%);color:#fff;padding:30px 34px 26px;box-shadow:0 18px 40px rgba(9,38,45,.18); }
+  .hero:after { content:"";position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.38),transparent 65%); }
+  .brand { display:flex;align-items:center;gap:14px;position:relative;z-index:1; }
+  .logo { width:46px;height:46px;border-radius:12px;background:linear-gradient(145deg,#5eead4,#14b8a6);display:grid;place-items:center;color:#062a2a;font:800 26px/1 var(--mono);box-shadow:0 6px 16px rgba(0,0,0,.2); }
+  .brand h1 { margin:0;font-size:26px;letter-spacing:.3px; }
+  .brand h1 span { font:600 12px/1 var(--mono);color:#99f6e4;background:rgba(255,255,255,.1);padding:4px 7px;border-radius:6px;margin-left:8px;vertical-align:middle; }
+  .brand p { margin:2px 0 0;color:#b9dcd9;font-size:12.5px; }
+  .hero-meta { display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:22px;position:relative;z-index:1;color:#c7e6e2;font-size:12.5px; }
+  .hero-meta code { color:#f0fdfa;background:rgba(255,255,255,.09);padding:2px 7px;border-radius:5px; }
+  .grid { display:grid;grid-template-columns:1.25fr 1fr 1.15fr 1fr;gap:14px;margin-top:16px; }
+  .card { background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;box-shadow:0 3px 10px rgba(16,42,51,.04); }
+  .card .label { color:var(--muted);font-size:12px;letter-spacing:.5px;text-transform:uppercase; }
+  .score-wrap { display:flex;align-items:center;gap:16px;margin-top:8px; }
+  .score { --value:84;width:82px;height:82px;border-radius:50%;background:conic-gradient(#b42318 calc(var(--value)*1%),#e6eef1 0);display:grid;place-items:center;flex:0 0 auto; }
+  .score-inner { width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center; }
+  .score-inner strong { display:block;font:700 24px/1 var(--mono);color:#b42318; }
+  .score-inner span { font-size:10px;color:var(--muted); }
+  .grade { font:800 24px/1 var(--mono);color:#b42318; }
+  .grade-label { color:var(--muted);font-size:12px; }
+  .big { font:700 30px/1.1 var(--mono);margin-top:10px; }
+  .big small { font-size:13px;color:var(--muted);font-family:var(--sans);font-weight:400; }
+  .dist { margin-top:10px;display:grid;gap:7px; }
+  .dist-row { display:grid;grid-template-columns:58px 1fr 22px;align-items:center;gap:8px;font-size:12px; }
+  .dist-label { display:flex;align-items:center;gap:5px;color:var(--muted); }
+  .dist-label i { width:7px;height:7px;border-radius:50%;display:inline-block; }
+  .dist-track { height:6px;border-radius:99px;background:#edf3f5;overflow:hidden; }
+  .dist-track span { display:block;height:100%;border-radius:99px; }
+  .dist-row strong { text-align:right;font-family:var(--mono);font-size:12px; }
+  .muted { color:var(--muted);font-size:12px;margin:8px 0 0; }
+  .toolbar { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 2px 12px; }
+  .toolbar h2 { font-size:16px;margin:0;letter-spacing:.2px; }
+  .filters { display:flex;gap:6px;flex-wrap:wrap; }
+  .filter { border:1px solid var(--line);background:#fff;color:var(--muted);font:12px var(--sans);padding:6px 10px;border-radius:999px;cursor:pointer; }
+  .filter.active { background:var(--dark);border-color:var(--dark);color:#fff; }
+  .finding { background:var(--card);border:1px solid var(--line);border-left:4px solid var(--severity);border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 6px rgba(16,42,51,.03); }
+  .finding.hidden { display:none; }
+  .finding-head { display:flex;align-items:center;flex-wrap:wrap;gap:8px; }
+  .badge { font:700 11px/1 var(--mono);color:#fff;background:var(--severity);padding:5px 7px;border-radius:5px;letter-spacing:.4px; }
+  .rule-id { font:600 12px var(--mono);color:var(--severity);background:var(--severity-bg);padding:4px 6px;border-radius:5px; }
+  .finding h2 { font-size:15px;margin:0; }
+  .location { margin-left:auto;font:12px var(--mono);color:var(--muted);background:#f6f9fa;border:1px solid var(--line);padding:4px 7px;border-radius:6px; }
+  .meta-line { display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:9px;color:var(--muted);font-size:12px; }
+  .meta-line code { font-family:var(--mono);color:var(--ink); }
+  .message { margin:10px 0 10px;color:#203b44; }
+  .evidence { margin:0;background:#0b1f24;color:#d7f4ee;border-radius:9px;padding:12px 14px;overflow:auto;font:12.5px/1.6 var(--mono);border:1px solid #163a42; }
+  .fix { margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px; }
+  .fix strong { color:var(--accent);font-size:12px;letter-spacing:.4px; }
+  .fix p { margin:4px 0 0;color:#35525b; }
+  .empty { background:#fff;border:1px dashed #bfd5d2;border-radius:12px;padding:28px;text-align:center;color:#245c55; }
+  .empty p { margin:6px 0 0;color:var(--muted);font-size:13px; }
+  .footer { display:flex;justify-content:space-between;gap:16px;margin-top:28px;padding-top:14px;border-top:1px solid var(--line);color:#7d9299;font-size:11.5px; }
+  @media (max-width:900px) { .grid { grid-template-columns:1fr 1fr; } .location { margin-left:0; } }
+  @media print { body { background:#fff; } .page { max-width:none;padding:0; } .hero { box-shadow:none;border-radius:0; } .filter { display:none; } .finding { break-inside:avoid; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="hero">
+    <div class="brand">
+      <div class="logo">S</div>
+      <div>
+        <h1>SolSentry <span>v1.0.0</span></h1>
+        <p>面向 Solidity 的轻量级静态风险扫描器 · 证据优先 · 可解释 · 零依赖</p>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <span>目标 <code>examples/vulnerable</code></span>
+      <span>生成时间 2026-11-09T11:27:36+08:00</span>
+      <span>3 个文件 / 101 行</span>
+      <span>抑制 0 条</span>
+      <span>耗时 5 ms</span>
+    </div>
+  </header>
+
+  <section class="grid" aria-label="扫描概览">
+    <div class="card">
+      <div class="label">Risk score</div>
+      <div class="score-wrap">
+        <div class="score"><div class="score-inner"><strong>84</strong><span>/ 100</span></div></div>
+        <div>
+          <div class="grade">F</div>
+          <div class="grade-label">严重风险</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="label">Findings</div>
+      <div class="big">11<small> 个问题</small></div>
+      <div class="muted">高危 5 · 中危 6 · 低危 0</div>
+    </div>
+    <div class="card">
+      <div class="label">Severity distribution</div>
+      <div class="dist">
+            <div class="dist-row">
+              <span class="dist-label"><i style="background:#d92d20"></i>高危</span>
+              <div class="dist-track"><span style="width:70%;background:#d92d20"></span></div>
+              <strong>5</strong>
+            </div>
+            
+            <div class="dist-row">
+              <span class="dist-label"><i style="background:#b54708"></i>中危</span>
+              <div class="dist-track"><span style="width:84%;background:#b54708"></span></div>
+              <strong>6</strong>
+            </div>
+            </div>
+    </div>
+    <div class="card">
+      <div class="label">Coverage</div>
+      <div class="big">101<small> 行已扫描</small></div>
+      <div class="muted">3 个合约文件 · 7 条规则 · 抑制 0 条</div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <h2>风险明细 <span class="muted">（11）</span></h2>
+    <div class="filters" role="group" aria-label="按等级筛选">
+      <button class="filter active" data-filter="all">全部</button>
+      <button class="filter" data-filter="high">高危</button>
+      <button class="filter" data-filter="medium">中危</button>
+      <button class="filter" data-filter="low">低危</button>
+    </div>
+  </div>
+
+  <main id="findings">
+    
+    <article class="finding" data-severity="high" style="--severity:#d92d20;--severity-bg:#fef3f2">
+      <div class="finding-head">
+        <span class="badge">HIGH</span>
+        <span class="rule-id">SS-101</span>
+        <h2>Reentrancy</h2>
+        <span class="location">examples/vulnerable/Bank.sol:20:33</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>withdraw</code></span>
+        <span>置信度 medium</span>
+        <span>SWC-107</span>
+        <span>CWE-841</span>
+        <span>高危</span>
+      </div>
+      <p class="message">函数 withdraw 在外部调用后仍更新状态变量 balances，存在重入窗口。</p>
+      <pre class="evidence"><code>(bool ok, ) = msg.sender.call{value: amount}(&quot;&quot;);</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>遵循 Checks-Effects-Interactions：先更新状态，再进行外部调用；或使用 OpenZeppelin ReentrancyGuard 的 nonReentrant 修饰符，并补充重入测试。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="high" style="--severity:#d92d20;--severity-bg:#fef3f2">
+      <div class="finding-head">
+        <span class="badge">HIGH</span>
+        <span class="rule-id">SS-102</span>
+        <h2>tx.origin Authentication</h2>
+        <span class="location">examples/vulnerable/Bank.sol:26:17</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>setOwner</code></span>
+        <span>置信度 high</span>
+        <span>SWC-115</span>
+        <span>CWE-284</span>
+        <span>高危</span>
+      </div>
+      <p class="message">函数 setOwner 使用 tx.origin 做身份判断；钓鱼合约可诱导受害者触发调用并继承其权限。</p>
+      <pre class="evidence"><code>require(tx.origin == owner, &quot;not owner&quot;);</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>改用 msg.sender 校验身份；若需要兼容元交易，使用 EIP-2771 可信转发器并校验转发器地址与 calldata。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="high" style="--severity:#d92d20;--severity-bg:#fef3f2">
+      <div class="finding-head">
+        <span class="badge">HIGH</span>
+        <span class="rule-id">SS-102</span>
+        <h2>tx.origin Authentication</h2>
+        <span class="location">examples/vulnerable/Lottery.sol:32:17</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>withdrawPot</code></span>
+        <span>置信度 high</span>
+        <span>SWC-115</span>
+        <span>CWE-284</span>
+        <span>高危</span>
+      </div>
+      <p class="message">函数 withdrawPot 使用 tx.origin 做身份判断；钓鱼合约可诱导受害者触发调用并继承其权限。</p>
+      <pre class="evidence"><code>require(tx.origin == owner, &quot;not owner&quot;);</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>改用 msg.sender 校验身份；若需要兼容元交易，使用 EIP-2771 可信转发器并校验转发器地址与 calldata。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="high" style="--severity:#d92d20;--severity-bg:#fef3f2">
+      <div class="finding-head">
+        <span class="badge">HIGH</span>
+        <span class="rule-id">SS-104</span>
+        <h2>Delegatecall to Dynamic Target</h2>
+        <span class="location">examples/vulnerable/Proxy.sol:24:48</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>execute</code></span>
+        <span>置信度 high</span>
+        <span>SWC-112</span>
+        <span>CWE-829</span>
+        <span>高危</span>
+      </div>
+      <p class="message">函数 execute 对动态目标执行 delegatecall，攻击者可能控制执行逻辑并改写当前合约存储。</p>
+      <pre class="evidence"><code>(bool ok, bytes memory result) = target.delegatecall(data);</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>将实现地址限制为不可变常量或受权限控制的 EIP-1967 槽位；升级入口必须加onlyOwner/onlyRole，并对目标代码哈希做白名单校验。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="high" style="--severity:#d92d20;--severity-bg:#fef3f2">
+      <div class="finding-head">
+        <span class="badge">HIGH</span>
+        <span class="rule-id">SS-106</span>
+        <h2>Selfdestruct Usage</h2>
+        <span class="location">examples/vulnerable/Proxy.sol:30:9</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>destroy</code></span>
+        <span>置信度 high</span>
+        <span>SWC-106</span>
+        <span>CWE-284</span>
+        <span>高危</span>
+      </div>
+      <p class="message">函数 destroy 调用 selfdestruct，可能强制转移余额并删除合约代码，破坏既有安全假设。</p>
+      <pre class="evidence"><code>selfdestruct(payable(msg.sender));</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>移除 selfdestruct，改用 pause + withdraw 的受控下架流程；若必须保留，添加强权限控制、事件记录与迁移预案。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-107</span>
+        <h2>Missing Access Control</h2>
+        <span class="location">examples/vulnerable/Bank.sol:25:5</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>setOwner</code></span>
+        <span>置信度 low</span>
+        <span>SWC-105</span>
+        <span>CWE-284</span>
+        <span>中危</span>
+      </div>
+      <p class="message">敏感函数 setOwner 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。</p>
+      <pre class="evidence"><code>function setOwner(address newOwner) external {</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>添加 onlyOwner/onlyRole 修饰符或 require(msg.sender == owner)，并为未授权调用补充负向测试。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-107</span>
+        <h2>Missing Access Control</h2>
+        <span class="location">examples/vulnerable/Bank.sol:30:5</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>sweep</code></span>
+        <span>置信度 low</span>
+        <span>SWC-105</span>
+        <span>CWE-284</span>
+        <span>中危</span>
+      </div>
+      <p class="message">敏感函数 sweep 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。</p>
+      <pre class="evidence"><code>function sweep(address payable to) external {</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>添加 onlyOwner/onlyRole 修饰符或 require(msg.sender == owner)，并为未授权调用补充负向测试。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-103</span>
+        <h2>Unchecked Low-Level Call</h2>
+        <span class="location">examples/vulnerable/Bank.sol:31:27</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>sweep</code></span>
+        <span>置信度 medium</span>
+        <span>SWC-104</span>
+        <span>CWE-252</span>
+        <span>中危</span>
+      </div>
+      <p class="message">函数 sweep 的 .call 返回值未被检查，调用失败时交易仍会继续执行。</p>
+      <pre class="evidence"><code>(bool sent, ) = to.call{value: address(this).balance}(&quot;&quot;);</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>捕获返回值并使用 require(success, &quot;call failed&quot;) 或 if (!success) revert 检查；优先使用经过审计的转账库。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-105</span>
+        <h2>Weak On-Chain Randomness</h2>
+        <span class="location">examples/vulnerable/Lottery.sol:23:1</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>draw</code></span>
+        <span>置信度 medium</span>
+        <span>SWC-120</span>
+        <span>CWE-330</span>
+        <span>中危</span>
+      </div>
+      <p class="message">函数 draw 使用区块变量生成随机结果，验证者可预测或影响抽取过程。</p>
+      <pre class="evidence"><code>keccak256(abi.encodePacked(block.timestamp, block.prevrandao, msg.sender))</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>使用 Chainlink VRF 等可验证随机函数；若只用于非资金场景，应在文档中明确其可预测性并限制经济影响。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-107</span>
+        <h2>Missing Access Control</h2>
+        <span class="location">examples/vulnerable/Proxy.sol:15:5</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>upgradeTo</code></span>
+        <span>置信度 low</span>
+        <span>SWC-105</span>
+        <span>CWE-284</span>
+        <span>中危</span>
+      </div>
+      <p class="message">敏感函数 upgradeTo 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。</p>
+      <pre class="evidence"><code>function upgradeTo(address newImplementation) external {</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>添加 onlyOwner/onlyRole 修饰符或 require(msg.sender == owner)，并为未授权调用补充负向测试。</p></div>
+    </article>
+    
+
+    <article class="finding" data-severity="medium" style="--severity:#b54708;--severity-bg:#fffaeb">
+      <div class="finding-head">
+        <span class="badge">MEDIUM</span>
+        <span class="rule-id">SS-107</span>
+        <h2>Missing Access Control</h2>
+        <span class="location">examples/vulnerable/Proxy.sol:29:5</span>
+      </div>
+      <div class="meta-line">
+        <span>函数 <code>destroy</code></span>
+        <span>置信度 low</span>
+        <span>SWC-105</span>
+        <span>CWE-284</span>
+        <span>中危</span>
+      </div>
+      <p class="message">敏感函数 destroy 为 public/external 且未见权限校验，任意地址均可调用并修改关键状态。</p>
+      <pre class="evidence"><code>function destroy() external {</code></pre>
+      <div class="fix"><strong>修复建议</strong><p>添加 onlyOwner/onlyRole 修饰符或 require(msg.sender == owner)，并为未授权调用补充负向测试。</p></div>
+    </article>
+    
+  </main>
+
+  <footer class="footer">
+    <span>SolSentry v1.0.0 · MIT License · 由规则引擎自动生成</span>
+    <span>静态分析结果仅供审计参考，不能替代人工复核与运行时验证。</span>
+  </footer>
+</div>
+<script>
+  const buttons = document.querySelectorAll('[data-filter]');
+  const items = document.querySelectorAll('.finding');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      const target = button.dataset.filter;
+      items.forEach(item => {
+        item.classList.toggle('hidden', target !== 'all' && item.dataset.severity !== target);
+      });
+    });
+  });
+</script>
+</body>
+</html>
