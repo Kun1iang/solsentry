@@ -13,7 +13,7 @@
 只需要 Python 3.10+，不依赖第三方运行时库：
 
 ```bash
-git clone https://github.com/yaokunliang/solsentry.git
+git clone https://github.com/Kun1iang/solsentry.git
 cd solsentry
 python -m unittest discover -s tests -v
 ```

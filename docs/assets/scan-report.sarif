@@ -7,7 +7,7 @@
         "driver": {
           "name": "SolSentry",
           "version": "1.0.0",
-          "informationUri": "https://github.com/Yaokunliang/solsentry",
+          "informationUri": "https://github.com/Kun1iang/solsentry",
           "rules": [
             {
               "id": "SS-101",

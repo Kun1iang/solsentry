@@ -5,7 +5,7 @@
 SolSentry 只需要 Python 3.10+，运行时无第三方依赖。
 
 ```bash
-git clone https://github.com/yaokunliang/solsentry.git
+git clone https://github.com/Kun1iang/solsentry.git
 cd solsentry
 PYTHONPATH=src python -m solsentry --help
 ```

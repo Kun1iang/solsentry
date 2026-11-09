@@ -47,7 +47,7 @@ SolSentry 选择另一条路：
 ## 快速开始
 
 ```powershell
-git clone https://github.com/yaokunliang/solsentry.git
+git clone https://github.com/Kun1iang/solsentry.git
 cd solsentry
 
 # 不安装包也可以直接运行
@@ -58,7 +58,7 @@ python -m solsentry scan examples/vulnerable
 Linux / macOS：
 
 ```bash
-git clone https://github.com/yaokunliang/solsentry.git
+git clone https://github.com/Kun1iang/solsentry.git
 cd solsentry
 PYTHONPATH=src python -m solsentry scan examples/vulnerable
 ```

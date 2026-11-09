@@ -227,7 +227,7 @@ def render_sarif(result: ScanResult) -> str:
                     "driver": {
                         "name": "SolSentry",
                         "version": __version__,
-                        "informationUri": "https://github.com/Yaokunliang/solsentry",
+                        "informationUri": "https://github.com/Kun1iang/solsentry",
                         "rules": rules,
                     }
                 },
