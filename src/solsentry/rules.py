@@ -1,4 +1,4 @@
-"""Rule metadata for SolSentry.
+"""Rule metadata for SolSentry_28.
 
 Every rule carries a stable identifier, a severity, and a mapping to the
 Smart Contract Weakness Classification (SWC) registry and MITRE CWE.

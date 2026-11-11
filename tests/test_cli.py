@@ -46,7 +46,7 @@ class CliTests(unittest.TestCase):
         completed = run_cli("scan", "examples/vulnerable", "--format", "json")
         self.assertEqual(completed.returncode, 1)
         payload = json.loads(completed.stdout)
-        self.assertEqual(payload["tool"]["name"], "SolSentry")
+        self.assertEqual(payload["tool"]["name"], "SolSentry_28")
         self.assertEqual(payload["summary"]["total"], 11)
         self.assertEqual(payload["summary"]["files_scanned"], 3)
 
@@ -54,7 +54,7 @@ class CliTests(unittest.TestCase):
         completed = run_cli("scan", "examples/vulnerable", "--format", "sarif")
         payload = json.loads(completed.stdout)
         self.assertEqual(payload["version"], "2.1.0")
-        self.assertEqual(payload["runs"][0]["tool"]["driver"]["name"], "SolSentry")
+        self.assertEqual(payload["runs"][0]["tool"]["driver"]["name"], "SolSentry_28")
         self.assertGreater(len(payload["runs"][0]["results"]), 0)
 
     def test_html_report_written_to_file(self) -> None:
@@ -72,7 +72,7 @@ class CliTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 1)
         text = output.read_text(encoding="utf-8")
-        self.assertIn("SolSentry", text)
+        self.assertIn("SolSentry_28", text)
         self.assertIn("SS-101", text)
 
     def test_rules_command(self) -> None:

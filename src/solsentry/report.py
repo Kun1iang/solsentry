@@ -44,7 +44,7 @@ def _severity_colour(severity: str) -> str:
 
 def render_console(result: ScanResult, color: bool = True) -> str:
     lines: list[str] = []
-    title = _paint("SolSentry", "bold", "cyan", color=color)
+    title = _paint("SolSentry_28", "bold", "cyan", color=color)
     version = _paint(f"v{__version__}", "gray", color=color)
     lines.append(f"{title} {version}  ·  Solidity 静态风险扫描器")
     lines.append(f"目标: {result.target}")
@@ -110,11 +110,11 @@ def _md_escape(text: str) -> str:
 def render_markdown(result: ScanResult) -> str:
     counts = result.counts()
     lines = [
-        "# SolSentry 扫描报告",
+        "# SolSentry_28 扫描报告",
         "",
         f"> 目标：`{result.target}`  ",
         f"> 生成时间：{result.generated_at}  ",
-        f"> 工具版本：SolSentry v{__version__}",
+        f"> 工具版本：SolSentry_28 v{__version__}",
         "",
         "## 概览",
         "",
@@ -225,9 +225,9 @@ def render_sarif(result: ScanResult) -> str:
             {
                 "tool": {
                     "driver": {
-                        "name": "SolSentry",
+                        "name": "SolSentry_28",
                         "version": __version__,
-                        "informationUri": "https://github.com/Kun1iang/solsentry",
+                        "informationUri": "https://github.com/Kun1iang/solsentry_28",
                         "rules": rules,
                     }
                 },
@@ -299,7 +299,7 @@ def _finding_html(finding: Finding) -> str:
 
 def render_html(result: ScanResult, title: str | None = None) -> str:
     counts = result.counts()
-    report_title = title or "SolSentry 扫描报告"
+    report_title = title or "SolSentry_28 扫描报告"
     score = result.risk_score
     grade = result.grade
     grade_colour = {
@@ -340,7 +340,7 @@ def render_html(result: ScanResult, title: str | None = None) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{_e(report_title)} · SolSentry</title>
+<title>{_e(report_title)} · SolSentry_28</title>
 <style>
   :root {{
     --ink:#102a33; --muted:#5b7078; --line:#dbe5ea; --bg:#f3f7f8;
@@ -412,7 +412,7 @@ def render_html(result: ScanResult, title: str | None = None) -> str:
     <div class="brand">
       <div class="logo">S</div>
       <div>
-        <h1>SolSentry <span>v{_e(__version__)}</span></h1>
+        <h1>SolSentry_28 <span>v{_e(__version__)}</span></h1>
         <p>面向 Solidity 的轻量级静态风险扫描器 · 证据优先 · 可解释 · 零依赖</p>
       </div>
     </div>
@@ -467,7 +467,7 @@ def render_html(result: ScanResult, title: str | None = None) -> str:
   </main>
 
   <footer class="footer">
-    <span>SolSentry v{_e(__version__)} · MIT License · 由规则引擎自动生成</span>
+    <span>SolSentry_28 v{_e(__version__)} · MIT License · 由规则引擎自动生成</span>
     <span>静态分析结果仅供审计参考，不能替代人工复核与运行时验证。</span>
   </footer>
 </div>

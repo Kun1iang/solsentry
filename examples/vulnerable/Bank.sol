@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 /// @title VulnerableBank
-/// @notice Deliberately insecure contract used by SolSentry's regression suite.
+/// @notice Deliberately insecure contract used by SolSentry_28's regression suite.
 contract VulnerableBank {
     mapping(address => uint256) public balances;
     address public owner;

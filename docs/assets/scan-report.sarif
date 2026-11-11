@@ -5,9 +5,9 @@
     {
       "tool": {
         "driver": {
-          "name": "SolSentry",
+          "name": "SolSentry_28",
           "version": "1.0.0",
-          "informationUri": "https://github.com/Kun1iang/solsentry",
+          "informationUri": "https://github.com/Kun1iang/solsentry_28",
           "rules": [
             {
               "id": "SS-101",

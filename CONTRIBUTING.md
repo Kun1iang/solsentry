@@ -1,6 +1,6 @@
-# Contributing to SolSentry
+# Contributing to SolSentry_28
 
-感谢你愿意参与 SolSentry。我们希望这个项目保持**小、清楚、可复核**，所以贡献流程也尽量轻量。
+感谢你愿意参与 SolSentry_28。我们希望这个项目保持**小、清楚、可复核**，所以贡献流程也尽量轻量。
 
 ## 先讨论，再动手
 
@@ -13,8 +13,8 @@
 只需要 Python 3.10+，不依赖第三方运行时库：
 
 ```bash
-git clone https://github.com/Kun1iang/solsentry.git
-cd solsentry
+git clone https://github.com/Kun1iang/solsentry_28.git
+cd solsentry_28
 python -m unittest discover -s tests -v
 ```
 

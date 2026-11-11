@@ -25,7 +25,7 @@ class ReportTests(unittest.TestCase):
 
     def test_markdown_contains_summary_and_findings(self) -> None:
         text = render_markdown(self.result)
-        self.assertIn("# SolSentry 扫描报告", text)
+        self.assertIn("# SolSentry_28 扫描报告", text)
         self.assertIn("SS-101", text)
         self.assertIn("修复建议", text)
 

@@ -1,8 +1,8 @@
-# SolSentry 扫描报告
+# SolSentry_28 扫描报告
 
 > 目标：`examples/vulnerable`  
 > 生成时间：2026-11-09T11:27:37+08:00  
-> 工具版本：SolSentry v1.0.0
+> 工具版本：SolSentry_28 v1.0.0
 
 ## 概览
 

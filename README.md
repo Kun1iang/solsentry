@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/assets/brand/solsentry-mark.svg" width="96" alt="SolSentry logo">
+  <img src="docs/assets/brand/solsentry-mark.svg" width="96" alt="SolSentry_28 logo">
 </p>
 
-<h1 align="center">SolSentry</h1>
+<h1 align="center">SolSentry_28</h1>
 
 <p align="center">
   <strong>面向 Solidity 的轻量级静态风险扫描器</strong><br>
@@ -18,20 +18,20 @@
 
 ---
 
-## 为什么做 SolSentry
+## 为什么做 SolSentry_28
 
 智能合约漏洞的代价极高，但很多团队在 CI 里仍缺少一个**足够轻、输出足够可读**的第一道检查。
 重量级分析平台学习成本高、报告术语密集；通用大模型又可能给出无法定位的结论。
-SolSentry 选择另一条路：
+SolSentry_28 选择另一条路：
 
 - **规则少而明确**：只覆盖 7 类高信号风险，每条都能落到 `文件:行:列`；
 - **证据可复核**：报告保留命中的源码行、SWC/CWE 映射、置信度和修复建议；
 - **零运行时依赖**：只使用 Python 标准库，Windows / Linux / macOS 开箱即用；
 - **对 CI 友好**：支持 JSON、Markdown、SARIF 与独立 HTML 报告，可用退出码阻断高危合并。
 
-本项目同时是本科毕业设计《基于多智能体与静态分析协同的智能合约漏洞检测及修复建议平台》的
-**静态分析证据层**开源组件。它负责把“可疑代码位置 + 依据”稳定地交给上层审计智能体，
-再由智能体完成复现、修复与回归；本项目本身不调用大模型，也不替代人工审计。
+SolSentry_28 是一个独立维护的开源静态风险扫描器，负责稳定输出“可疑代码位置 + 证据 + 修复建议”。
+扫描结果可通过 JSON 或 SARIF 接入其他代码审计流程；本项目不调用大模型，不执行合约，
+也不替代人工审计与运行时验证。
 
 ## 核心能力
 
@@ -47,8 +47,8 @@ SolSentry 选择另一条路：
 ## 快速开始
 
 ```powershell
-git clone https://github.com/Kun1iang/solsentry.git
-cd solsentry
+git clone https://github.com/Kun1iang/solsentry_28.git
+cd solsentry_28
 
 # 不安装包也可以直接运行
 $env:PYTHONPATH = "src"
@@ -58,8 +58,8 @@ python -m solsentry scan examples/vulnerable
 Linux / macOS：
 
 ```bash
-git clone https://github.com/Kun1iang/solsentry.git
-cd solsentry
+git clone https://github.com/Kun1iang/solsentry_28.git
+cd solsentry_28
 PYTHONPATH=src python -m solsentry scan examples/vulnerable
 ```
 
@@ -74,7 +74,7 @@ solsentry scan contracts/
 
 ```text
 $ python -m solsentry scan examples/vulnerable
-SolSentry v1.0.0  ·  Solidity 静态风险扫描器
+SolSentry_28 v1.0.0  ·  Solidity 静态风险扫描器
 目标: examples/vulnerable
 扫描: 3 个文件 / 101 行  ·  用时 5 ms
 
@@ -100,7 +100,7 @@ python -m solsentry scan examples/vulnerable \
 ### 接入 CI
 
 ```yaml
-- name: SolSentry
+- name: SolSentry_28
   run: |
     PYTHONPATH=src python -m solsentry scan contracts \
       --format sarif \
@@ -147,7 +147,7 @@ Solidity files
 ## 项目结构
 
 ```text
-solsentry/
+solsentry_28/
 ├─ src/solsentry/          # 扫描器、规则元数据、报告器、CLI
 ├─ tests/                  # 30 个 unittest 用例（含 CLI 与报告）
 ├─ examples/
@@ -205,5 +205,5 @@ solsentry/
 ---
 
 <p align="center">
-  <sub>SolSentry v1.0.0 · 用可复核的证据，让合约审计从第一行代码开始。</sub>
+  <sub>SolSentry_28 v1.0.0 · 用可复核的证据，让合约审计从第一行代码开始。</sub>
 </p>

@@ -1,4 +1,4 @@
-"""Command-line interface for SolSentry."""
+"""Command-line interface for SolSentry_28."""
 
 from __future__ import annotations
 
@@ -18,9 +18,9 @@ FAIL_LEVELS = {"critical", "high", "medium", "low", "info", "none"}
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="solsentry",
-        description="SolSentry — 面向 Solidity 的轻量级静态风险扫描器",
+        description="SolSentry_28 — 面向 Solidity 的轻量级静态风险扫描器",
     )
-    parser.add_argument("-V", "--version", action="version", version=f"SolSentry {__version__}")
+    parser.add_argument("-V", "--version", action="version", version=f"SolSentry_28 {__version__}")
     subparsers = parser.add_subparsers(dest="command")
 
     scan = subparsers.add_parser("scan", help="扫描 Solidity 合约")
@@ -32,7 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="console",
         help="输出格式（默认 console）",
     )
-    scan.add_argument("-o", "--output", help="写入文件；HTML 未指定时默认 solsentry-report.html")
+    scan.add_argument("-o", "--output", help="写入文件；HTML 未指定时默认 solsentry_28-report.html")
     scan.add_argument(
         "--min-severity",
         choices=list(SEVERITY_ORDER),
@@ -164,7 +164,7 @@ def main(argv: list[str] | None = None) -> int:
     color = args.color == "always" or (args.color == "auto" and sys.stdout.isatty())
     output = args.output
     if args.format == "html" and not output:
-        output = "solsentry-report.html"
+        output = "solsentry_28-report.html"
     text = _render(result, args.format, color)
     _write(text, output)
 

@@ -1,9 +1,9 @@
-# Publish SolSentry to a remote Git host.
+# Publish SolSentry_28 to a remote Git host.
 #
 # Usage:
 #   1. Create an EMPTY repository on GitHub/Gitee (no README, no .gitignore).
 #   2. Run:
-#        .\scripts\publish.ps1 -RemoteUrl "git@github.com:<you>/solsentry.git"
+#        .\scripts\publish.ps1 -RemoteUrl "git@github.com:<you>/solsentry_28.git"
 #   3. The script pushes main, develop, and all version tags.
 
 param(

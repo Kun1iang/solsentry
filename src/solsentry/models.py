@@ -126,7 +126,7 @@ class ScanResult:
     def to_dict(self) -> dict[str, Any]:
         counts = self.counts()
         return {
-            "tool": {"name": "SolSentry", "version": __version__},
+            "tool": {"name": "SolSentry_28", "version": __version__},
             "target": self.target,
             "generated_at": self.generated_at,
             "summary": {

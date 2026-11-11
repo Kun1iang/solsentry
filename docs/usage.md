@@ -2,11 +2,11 @@
 
 ## 安装
 
-SolSentry 只需要 Python 3.10+，运行时无第三方依赖。
+SolSentry_28 只需要 Python 3.10+，运行时无第三方依赖。
 
 ```bash
-git clone https://github.com/Kun1iang/solsentry.git
-cd solsentry
+git clone https://github.com/Kun1iang/solsentry_28.git
+cd solsentry_28
 PYTHONPATH=src python -m solsentry --help
 ```
 
@@ -28,7 +28,7 @@ solsentry scan [路径 ...] [选项]
 | 选项 | 说明 |
 | --- | --- |
 | `-f, --format` | `console`（默认）、`json`、`markdown`、`html`、`sarif` |
-| `-o, --output` | 写入文件；HTML 未指定时默认 `solsentry-report.html` |
+| `-o, --output` | 写入文件；HTML 未指定时默认 `solsentry_28-report.html` |
 | `--min-severity` | 只展示不低于该等级的问题（默认 `info`） |
 | `--fail-on` | 出现不低于该等级的问题时退出码为 1（默认 `high`，可选 `none`） |
 | `--exclude` | 排除 glob，可重复；例如 `--exclude "test/**"` |

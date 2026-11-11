@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 /// @title SimpleToken
-/// @notice Clean baseline used to check that SolSentry stays quiet on common code.
+/// @notice Clean baseline used to check that SolSentry_28 stays quiet on common code.
 contract SimpleToken {
     mapping(address => uint256) public balanceOf;
     uint256 public totalSupply;

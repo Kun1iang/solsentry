@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "solsentry"
+name = "solsentry_28"
 version = "1.0.0"
 description = "A lightweight, evidence-first static risk scanner for Solidity contracts."
 readme = "README.md"
@@ -33,9 +33,9 @@ dev = []
 solsentry = "solsentry.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Kun1iang/solsentry"
-Documentation = "https://github.com/Kun1iang/solsentry/tree/main/docs"
-Issues = "https://github.com/Kun1iang/solsentry/issues"
+Homepage = "https://github.com/Kun1iang/solsentry_28"
+Documentation = "https://github.com/Kun1iang/solsentry_28/tree/main/docs"
+Issues = "https://github.com/Kun1iang/solsentry_28/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

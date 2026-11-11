@@ -1,6 +1,6 @@
 {
   "tool": {
-    "name": "SolSentry",
+    "name": "SolSentry_28",
     "version": "1.0.0"
   },
   "target": "examples/vulnerable",
